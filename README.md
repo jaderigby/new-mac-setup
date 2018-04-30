@@ -21,3 +21,10 @@ source ~/.bash_profile
 ```
 
 - You're all set!
+
+## Usage ##
+
+- To run all features, do:
+```
+setup.py -a
+```
