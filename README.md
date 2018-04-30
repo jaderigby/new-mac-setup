@@ -1,6 +1,6 @@
 # Instructions: #
 
-## Setting Up Quizes ##
+## Setup ##
 
 - Clone the "new-mac-setup" repo into your Documents folder
 
