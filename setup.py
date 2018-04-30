@@ -43,7 +43,7 @@ def main():
             print("\t- path variable already set!")
         else:
             print("\t- path variable for executable is set")
-            FILE = open(base + '/.bashrc', 'w')
+            FILE = open(base + '/.bash_profile', 'w')
             data += alias
             FILE.write(data)
             FILE.close()
