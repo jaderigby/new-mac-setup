@@ -15,7 +15,7 @@ git clone https://github.com/jaderigby/new-mac-setup.git
 python ~/Documents/new-mac-setup/setup.py --exec
 ```
 
-- This configure your setup.py file to be run as an executable. Run the following command to update your bash session:
+- This configures your setup.py file to be run as an executable. Run the following command to update your bash session:
 ```
 source ~/.bash_profile
 ```
