@@ -2,6 +2,8 @@
 
 ## Setup ##
 
+- Download and install [git](https://git-scm.com/downloads)
+
 - Clone the "new-mac-setup" repo into your Documents folder
 
 - Once you have done this, run the following command:

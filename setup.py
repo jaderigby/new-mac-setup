@@ -444,61 +444,98 @@ def main():
         FILE.write(data)
         FILE.close()
 
+    def verify_file(FILEPATH, VERIFY_STRING, CONFIRM_MESSAGE, ALERT_MESSAGE):
+        if not os.path.exists(FILEPATH):
+            write_file(FILEPATH, VERIFY_STRING)
+            print("\t\t- {}".format(CONFIRM_MESSAGE))
+            print("")
+        elif os.path.exists(FILEPATH):
+            data = read_file(FILEPATH)
+            pat = re.escape(VERIFY_STRING)
+            match = re.search(pat, data)
+            if not match:
+                write_file(FILEPATH, data + '\n' + VERIFY_STRING)
+                print("\t\t- {}".format(CONFIRM_MESSAGE))
+                print("")
+            else:
+                print("\t\t- {}!".format(ALERT_MESSAGE))
+                print("")
+
     def handle_inkscape_customization():
         print("")
-        print("-- Inkscape: Customizing Icons and Colors --")
+        print("-- Inkscape: Customizing Keys, Icons and Skin --")
         base = os.path.expanduser('~')
 
+        keysTemplate = base +  '/Documents/new-mac-setup/Inkscape/default.xml'
         keysPath = "/Applications/Inkscape.app/Contents/Resources/share/inkscape/keys/default.xml"
-        keysTemplate = base + '/Documents/new-mac-setup/Inkscape/default.xml'
 
-        themePath = base + '/.themes/Darken'
         themeTemplate = base + '/Documents/new-mac-setup/Inkscape/Darken'
+        themePath = base + '/.themes/Darken/'
 
-        iconPath = "/Applications/Inkscape.app/Contents/Resources/share/inkscape/icons/icons.svg"
         iconTemplate = base + '/Documents/new-mac-setup/Inkscape/icons.svg'
+        iconPath = "/Applications/Inkscape.app/Contents/Resources/share/inkscape/icons/icons.svg"
+
+        xmodmapString = '''! ~/.Xmodmap
+clear Mod2
+clear control
+keycode 63 = Control_L
+keycode 67 = Control_L
+keycode 71 = Control_L
+add control = Control_L
+'''
 
         gtkString = '''gtk-theme-name = "Darken"'''
 
-        # print("")
-        # print("\t- Setting Keys")
-        # print("")
-        # subprocess_cmd('cp {} {}'.format(keysTemplate, keysPath))
+        print("")
+        print("\t- Setting Keys")
+        print("")
+        print('Running Command: {} {} {}'.format('cp', keysTemplate, keysPath))
+        subprocess_cmd('cp {} {}'.format(keysTemplate, keysPath))
+        raw_input('''Instructions:
+1. Start the X11 application
+2. In X11, go to X11 > Preferences > Input tab. Make sure that the following options are UNCHECKED:
 
-        #== In order to style the skin, you have to style the x11 theme settings, instead
+  - Follow system keyboard layout
+  - Enable key equivalents under X11
+
+3. Close X11 Preferences
+
+Press "Enter" to continue:''')
+        print("")
+        print("\t- Finalizing Command Key Setup")
+        print("")
+
+        verify_file(base + '/.Xmodmap', xmodmapString, 'Xmodmap for command key set', 'Xmodmap for command key already set')
+
+        raw_input('''Another issue that you may run into is copy/paste converts objects to bitmaps. You can resolve this in xQuartz by unchecking "Update Pasteboard when CLIPBOARD changes"
+
+Press "Enter" to continue:''')
+
+        #== In order to style the skin, you have to style the x11 theme settings, instead:
+        #================================================
         print("")
         print("\t- Setting Theme: Darken")
         print("")
 
+        if not os.path.exists(base + '/.themes'):
+            subprocess_cmd('mkdir {}/.themes'.format(base))
+
         if not os.path.exists(themePath):
-            subprocess_cmd('cp {} {}'.format(themeTemplate, themePath))
+            subprocess_cmd('cp -r {} {}'.format(themeTemplate, themePath))
             print("\t\t- Theme added")
             print("")
         else:
             print("\t\t- Theme already added!")
             print("")
 
-        if not os.path.exists(base + '/.themes'):
-            subprocess_cmd('mkdir {}/.themes'.format(base))
+        verify_file(base + '/.gtkrc-2.0', gtkString, 'Theme set', 'Theme already set')
+        #================================================
 
-        if not os.path.exists(base + '/.gtkrc-2.0'):
-            write_file(base + '.gtkrc', gtkString)
-        elif os.path.exists(base + '/.gtkrc-2.0'):
-            data = read_file(base + '/.gtkrc-2.0')
-            pat = re.escape('gtk-theme-name = "Darken"')
-            match = re.search(pat, data)
-            if not match:
-                write_file(base + '.gtkrc', data + '\n' + gtkString)
-                print("\t\t- Theme set")
-                print("")
-            else:
-                print("\t\t- Theme already set!")
-                print("")
-
-        # print("")
-        # print("\t- Setting Icons")
-        # print("")
-        # subprocess_cmd('cp {} {}'.format(iconTemplate, iconPath))
+        print("")
+        print("\t- Setting Icons")
+        print("")
+        print('Running Command: {} {} {}'.format('cp', iconTemplate, iconPath))
+        subprocess_cmd('cp {} {}'.format(iconTemplate, iconPath))
 
         # Contents/Resources/etc/gtk-2.0
 
