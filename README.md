@@ -28,3 +28,8 @@ source ~/.bash_profile
 ```
 setup.py -a
 ```
+
+- To see a list of options, do:
+```
+setup.py
+```
