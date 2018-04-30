@@ -25,6 +25,17 @@ def main():
 
     divider = "============================================================="
 
+    def read_file(FILEPATH):
+    	FILE = open(FILEPATH, 'r')
+    	data = FILE.read()
+    	FILE.close()
+    	return data
+
+    def write_file(FILEPATH, DATA):
+    	FILE = open(FILEPATH, 'w')
+    	FILE.write(DATA)
+    	FILE.close()
+
     def handle_executable():
         base = os.path.expanduser('~')
         if not os.path.exists(base + '/Documents/new-mac-setup'):
@@ -110,11 +121,6 @@ def main():
                 , "cmd" : "brew install git"
             }
             ,{
-                  "name" : "Dropbox"
-                , "verify" : "ls /Applications/ | grep -w Dropbox"
-                , "cmd" : "brew cask install dropbox"
-            }
-            ,{
                   "name" : "Node"
                 , "verify" : "node --version"
                 , "cmd" : "brew install node"
@@ -123,6 +129,16 @@ def main():
                   "name" : "Atom"
                 , "verify" : "ls /Applications/ | grep -w Atom"
                 , "cmd" : "brew cask install atom"
+            }
+            ,{
+                  "name" : "iTerm"
+                , "verify" : "ls /Applsications/ | grep -w iTerm"
+                , "cmd" : "brew cask install iterm2"
+            }
+            ,{
+                  "name" : "Dropbox"
+                , "verify" : "ls /Applications/ | grep -w Dropbox"
+                , "cmd" : "brew cask install dropbox"
             }
             ,{
                   "name" : "Slack"
@@ -165,15 +181,20 @@ def main():
                 , "cmd" : "brew cask install imagealpha"
             }
             ,{
+                  "name" : "Astropad Studio"
+                , "verify" : "ls /Applsications/ | grep -w Astropad Studio"
+                , "cmd" : "brew cask install astropad-studio"
+            }
+            ,{
                   "name" : "XQuartz"
-                , "verify" : None
+                , "verify" : "ls /Applsications/Utilities/ | grep -w XQuartz"
                 , "cmd" : "brew cask install xquartz"
             }
         ]
 
         for item in installDict:
             if verify_installation(item['verify']) != True:
-                print("Downloading {} ...".format(item['name']))
+                print("Downloading {}...".format(item['name']))
                 subprocess_cmd(item['cmd'])
 
         # npm install -g grunt-cli
@@ -423,6 +444,65 @@ def main():
         FILE.write(data)
         FILE.close()
 
+    def handle_inkscape_customization():
+        print("")
+        print("-- Inkscape: Customizing Icons and Colors --")
+        base = os.path.expanduser('~')
+
+        keysPath = "/Applications/Inkscape.app/Contents/Resources/share/inkscape/keys/default.xml"
+        keysTemplate = base + '/Documents/new-mac-setup/Inkscape/default.xml'
+
+        themePath = base + '/.themes/Darken'
+        themeTemplate = base + '/Documents/new-mac-setup/Inkscape/Darken'
+
+        iconPath = "/Applications/Inkscape.app/Contents/Resources/share/inkscape/icons/icons.svg"
+        iconTemplate = base + '/Documents/new-mac-setup/Inkscape/icons.svg'
+
+        gtkString = '''gtk-theme-name = "Darken"'''
+
+        # print("")
+        # print("\t- Setting Keys")
+        # print("")
+        # subprocess_cmd('cp {} {}'.format(keysTemplate, keysPath))
+
+        #== In order to style the skin, you have to style the x11 theme settings, instead
+        print("")
+        print("\t- Setting Theme: Darken")
+        print("")
+
+        if not os.path.exists(themePath):
+            subprocess_cmd('cp {} {}'.format(themeTemplate, themePath))
+            print("\t\t- Theme added")
+            print("")
+        else:
+            print("\t\t- Theme already added!")
+            print("")
+
+        if not os.path.exists(base + '/.themes'):
+            subprocess_cmd('mkdir {}/.themes'.format(base))
+
+        if not os.path.exists(base + '/.gtkrc-2.0'):
+            write_file(base + '.gtkrc', gtkString)
+        elif os.path.exists(base + '/.gtkrc-2.0'):
+            data = read_file(base + '/.gtkrc-2.0')
+            pat = re.escape('gtk-theme-name = "Darken"')
+            match = re.search(pat, data)
+            if not match:
+                write_file(base + '.gtkrc', data + '\n' + gtkString)
+                print("\t\t- Theme set")
+                print("")
+            else:
+                print("\t\t- Theme already set!")
+                print("")
+
+        # print("")
+        # print("\t- Setting Icons")
+        # print("")
+        # subprocess_cmd('cp {} {}'.format(iconTemplate, iconPath))
+
+        # Contents/Resources/etc/gtk-2.0
+
+
     #=== Execute ===
     if action == None:
         print("Acceptable Actions:")
@@ -433,6 +513,7 @@ def main():
 [ --install ]           install all software (node, chrome, etc)
 [ --atom-custom ]       customize atom (includes packages)
 [ --atom-snippets ]     markdown template snippet
+[ --inkscape-custom ]   customize Inkscape.  Includes: icons, colors, keybindings
 ''')
     else:
         for param in sys.argv:
@@ -442,6 +523,7 @@ def main():
                 handle_installs()
                 handle_atom_customization()
                 handle_atom_snippets()
+                handle_inkscape_customization()
             elif param == '--exec':
                 handle_executable()
             elif param == '--homebrew':
@@ -452,6 +534,8 @@ def main():
                 handle_atom_customization()
             elif param == '--atom-snippets':
                 handle_atom_snippets()
+            elif param == '--inkscape-custom':
+                handle_inkscape_customization()
         print(divider)
         print("")
 
