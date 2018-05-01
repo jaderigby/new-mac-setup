@@ -157,7 +157,7 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && kil
             }
             ,{
                   "name" : "iTerm"
-                , "verify" : "ls /Applsications/ | grep -w iTerm"
+                , "verify" : "ls /Applications/ | grep -w iTerm"
                 , "cmd" : "brew cask install iterm2"
             }
             ,{
@@ -207,20 +207,33 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && kil
             }
             ,{
                   "name" : "Astropad Studio"
-                , "verify" : "ls /Applsications/ | grep -w Astropad Studio"
+                , "verify" : "ls /Applications/ | grep -w Astropad Studio"
                 , "cmd" : "brew cask install astropad-studio"
             }
             ,{
+                  "name" : "Kaleidoscope"
+                , "verify" : "ls /Applications/ | grep -w Kaleidoscope"
+                , "cmd" : "brew cask install kaleidoscope"
+            }
+            ,{
                   "name" : "XQuartz"
-                , "verify" : "ls /Applsications/Utilities/ | grep -w XQuartz"
+                , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
                 , "cmd" : "brew cask install xquartz"
             }
         ]
 
+        installed = []
         for item in installDict:
             if verify_installation(item['verify']) != True:
-                print("Downloading {}...".format(item['name']))
+                print("installing {}...".format(item['name']))
                 subprocess_cmd(item['cmd'])
+                installed.append(item['name'])
+        if len(installed) > 0:
+            print("")
+            print("The following items were installed: ")
+            print("")
+            for item in installed:
+                print "- {}".format(item)
 
         # npm install -g grunt-cli
 
@@ -573,10 +586,10 @@ Press "Enter" to continue:''')
                 handle_inkscape_customization()
             elif param == '--exec':
                 handle_executable()
-            elif param == '--aliases':
-                handle_aliases()
             elif param == '--homebrew':
                 handle_homebrew()
+            elif param == '--aliases':
+                handle_aliases()
             elif param == '--install':
                 handle_installs()
             elif param == '--atom-custom':
