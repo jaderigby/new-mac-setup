@@ -36,6 +36,23 @@ def main():
     	FILE.write(DATA)
     	FILE.close()
 
+    def verify_file(FILEPATH, VERIFY_STRING, CONFIRM_MESSAGE, ALERT_MESSAGE):
+        if not os.path.exists(FILEPATH):
+            write_file(FILEPATH, VERIFY_STRING)
+            print("\t\t- {}".format(CONFIRM_MESSAGE))
+            print("")
+        elif os.path.exists(FILEPATH):
+            data = read_file(FILEPATH)
+            pat = re.escape(VERIFY_STRING)
+            match = re.search(pat, data)
+            if not match:
+                write_file(FILEPATH, data + '\n' + VERIFY_STRING)
+                print("\t\t- {}".format(CONFIRM_MESSAGE))
+                print("")
+            else:
+                print("\t\t- {}!".format(ALERT_MESSAGE))
+                print("")
+
     def handle_executable():
         base = os.path.expanduser('~')
         if not os.path.exists(base + '/Documents/new-mac-setup'):
@@ -88,6 +105,14 @@ def main():
         process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
         proc_stdout = process.communicate()[0].strip()
         print proc_stdout
+
+    def handle_aliases():
+        base = os.path.expanduser('~')
+        snippet = '''# Show hidden files in Finder
+alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE && killall Finder"
+# Hide hidden files in Finder
+alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"'''
+        verify_file(base + '/.bash_profile', snippet, 'Aliases are set', 'Aliases already set')
 
     def handle_homebrew():
         if verify_installation('brew --version') != True:
@@ -444,23 +469,6 @@ def main():
         FILE.write(data)
         FILE.close()
 
-    def verify_file(FILEPATH, VERIFY_STRING, CONFIRM_MESSAGE, ALERT_MESSAGE):
-        if not os.path.exists(FILEPATH):
-            write_file(FILEPATH, VERIFY_STRING)
-            print("\t\t- {}".format(CONFIRM_MESSAGE))
-            print("")
-        elif os.path.exists(FILEPATH):
-            data = read_file(FILEPATH)
-            pat = re.escape(VERIFY_STRING)
-            match = re.search(pat, data)
-            if not match:
-                write_file(FILEPATH, data + '\n' + VERIFY_STRING)
-                print("\t\t- {}".format(CONFIRM_MESSAGE))
-                print("")
-            else:
-                print("\t\t- {}!".format(ALERT_MESSAGE))
-                print("")
-
     def handle_inkscape_customization():
         print("")
         print("-- Inkscape: Customizing Keys, Icons and Skin --")
@@ -546,6 +554,7 @@ Press "Enter" to continue:''')
         print('''
 [ -a ]                  Run all processes
 [ --exec ]              make script executable from command line by simply typing file name
+[ --aliases ]           Add standard aliases to bash_profile, including show/hide hidden files
 [ --homebrew ]          install Homebrew
 [ --install ]           install all software (node, chrome, etc)
 [ --atom-custom ]       customize atom (includes packages)
@@ -556,6 +565,7 @@ Press "Enter" to continue:''')
         for param in sys.argv:
             if param == '-a':
                 handle_executable()
+                handle_aliases()
                 handle_homebrew()
                 handle_installs()
                 handle_atom_customization()
@@ -563,6 +573,8 @@ Press "Enter" to continue:''')
                 handle_inkscape_customization()
             elif param == '--exec':
                 handle_executable()
+            elif param == '--aliases':
+                handle_aliases()
             elif param == '--homebrew':
                 handle_homebrew()
             elif param == '--install':
