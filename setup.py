@@ -61,9 +61,14 @@ def main():
         alias = '''
     export PATH={}/Documents/new-mac-setup:$PATH
     '''.format(base)
-        FILE = open(base + '/.bash_profile', 'r')
-        data = FILE.read()
-        FILE.close()
+        if (os.path.exists(base + '/.bash_profile')):
+            FILE = open(base + '/.bash_profile', 'r')
+            data = FILE.read()
+            FILE.close()
+        else:
+            FILE = open(base + '/.bash_profile', 'w')
+            FILE.close()
+            data = ""
         pat = re.escape(alias)
         match = re.search(pat, data)
         if match:
@@ -86,12 +91,11 @@ def main():
             print("result: " + result)
             return True
 
+        executable = False
         for line in out.split('\n'):
             if 'setup.py' in line:
                 if '-x' in line:
                     executable = True
-                else:
-                    executable = False
 
         if executable:
             print("\t- permissions for setup file already set!")
@@ -111,10 +115,21 @@ def main():
         snippet = '''# Show hidden files in Finder
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE && killall Finder"
 # Hide hidden files in Finder
-alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"'''
+alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"
+
+jira_branch_func() {
+  newBranch=$1
+  git fetch origin
+  git branch -v -a
+  git checkout --track origin/$newBranch
+}
+
+alias jira-branch="jira_branch_func"'''
         verify_file(base + '/.bash_profile', snippet, 'Aliases are set', 'Aliases already set')
 
     def handle_homebrew():
+        print("Installing Homebrew ...")
+        print('if you have problems, please install Homebrew manually by running the following command: \n/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
         if verify_installation('brew --version') != True:
             subprocess_cmd('/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
             subprocess_cmd('brew update')
@@ -173,7 +188,7 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && kil
             ,{
                   "name" : "Inkscape"
                 , "verify" : "ls /Applications/ | grep -w Inkscape"
-                , "cmd" : "brew install inkscape"
+                , "cmd" : "brew cask install inkscape"
             }
             ,{
                   "name" : "Blender"
@@ -220,6 +235,11 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && kil
                 , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
                 , "cmd" : "brew cask install xquartz"
             }
+            # ,{
+            #       "name" : "Affinity Designer"
+            #     , "verify" : "ls /Applications/ | grep -w 'Affinity Designer'"
+            #     , "cmd" : "brew cask install affinity-designer"
+            # }
         ]
 
         installed = []
