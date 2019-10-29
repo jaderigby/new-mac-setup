@@ -1160,12 +1160,12 @@ Press "Enter" to continue:''')
     	run_command(cleanupCommand)
 
     def handle_bash_tools_setup():
-        myFolder = 'bash-tools2'
+        myFolder = 'bash-tools'
         subprocess_cmd('mkdir ~/Documents/{myFolder}'.format(myFolder = myFolder))
         subprocess_cmd('cd ~/Documents/{myFolder} && touch .bashrc'.format(myFolder = myFolder))
         subprocess_cmd('mkdir ~/Documents/{myFolder}'.format(myFolder = myFolder))
         base = os.path.expanduser("~")
-        snippet = 'source ~/Documents/bash-tools2'
+        snippet = 'source ~/Documents/bash-tools'
         if os.path.exists('{base}/.bash_profile'.format(base = base)):
             data = read_file('{base}/.bash_profile'.format(base = base))
             verify_file(base + '/.bash_profile', snippet, 'Sourcing is set', 'Sourcing already set')
@@ -1174,24 +1174,25 @@ Press "Enter" to continue:''')
             verify_file(base + '/.bash_profile', snippet, 'Sourcing is set', 'Sourcing already set')
 
     def install_from_github(REPO_NAME, NEW_NAME):
-        myFolder = 'bash-tools2'
+        myFolder = 'bash-tools'
         subprocess_cmd('cd ~/Documents/{myFolder} && curl -OL https://github.com/jaderigby/{repoName}/archive/master.zip'.format(myFolder = myFolder, repoName = REPO_NAME))
         subprocess_cmd('cd ~/Documents/{myFolder} && unzip master.zip'.format(myFolder = myFolder))
         subprocess_cmd('scp -r ~/Documents/{myFolder}/{repoName}-master/ ~/Documents/{myFolder}/{newName}/'.format(myFolder = myFolder, repoName = REPO_NAME, newName = NEW_NAME))
         subprocess_cmd('cd ~/Documents/{myFolder}/ && rm master.zip && rm -r {repoName}-master'.format(myFolder = myFolder, repoName = REPO_NAME))
 
     def install_from_gitlab(REPO_NAME, NEW_NAME):
-        myFolder = 'bash-tools2'
+        myFolder = 'bash-tools'
         subprocess_cmd('cd ~/Documents/{myFolder} && curl -OL https://gitlab.com/jarigby/{repoName}/archive/master.zip'.format(myFolder = myFolder, repoName = REPO_NAME))
         subprocess_cmd('cd ~/Documents/{myFolder} && unzip master.zip'.format(myFolder = myFolder))
         subprocess_cmd('scp -r ~/Documents/{myFolder}/{repoName}-master/ ~/Documents/{myFolder}/{newName}/'.format(myFolder = myFolder, repoName = REPO_NAME, newName = NEW_NAME))
         subprocess_cmd('cd ~/Documents/{myFolder}/ && rm master.zip && rm -r {repoName}-master'.format(myFolder = myFolder, repoName = REPO_NAME))
 
     def handle_bacon_util():
-        subprocess_cmd('mkdir {}'.format('~/Documents/bash-tools2'))
+        base = os.path.expanduser('~')
+        subprocess_cmd('mkdir {}'.format('~/Documents/bash-tools'))
         handle_bash_tools_setup()
         install_from_github('bacon-util', 'bacon')
-        snippet = 'alias bacon="python ~/Documents/bash-tools2/bacon/baconActions.py'
+        snippet = 'alias bacon="python ~/Documents/bash-tools/bacon/baconActions.py'
         verify_file(base + '/.bash_profile', snippet, 'Alias is set', 'Alias already set')
 
         # alias bacon="python ~/Documents/bash-tools/bacon-util/baconActions.py"
