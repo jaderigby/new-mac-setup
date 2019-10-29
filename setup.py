@@ -368,7 +368,7 @@ source ~/Documents/bash-tools/.bashrc
             currObj = installDict[item]
             if verify_installation(currObj['verify']) != True:
                 print("installing {}...".format(currObj['name']))
-                # subprocess_cmd(currObj['cmd'])
+                subprocess_cmd(currObj['cmd'])
                 installed.append(currObj['name'])
         if len(installed) > 0:
             print("")
