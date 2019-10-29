@@ -423,6 +423,7 @@ source ~/Documents/bash-tools/.bashrc
 
     def handle_atom_snippets():
         base = os.path.expanduser('~')
+        verify_file(base + '/.atom/snippets.cson', 'Snippets file created!', 'Snippets file verified!')
         FILE = open(base + '/.atom/snippets.cson', 'r')
         data = FILE.read()
         FILE.close()
