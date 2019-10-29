@@ -300,11 +300,6 @@ source ~/Documents/bash-tools/.bashrc
                     , "verify" : "ls /Applications/ | grep -w Slack"
                     , "cmd" : "brew cask install slack"
                 }
-                , "Inkscape" : {
-                    "name" : "Inkscape"
-                    , "verify" : "ls /Applications/ | grep -w Inkscape"
-                    , "cmd" : "brew cask install inkscape"
-                }
                 , "Blender" : {
                     "name" : "Blender"
                     , "verify" : "ls /Applications/ | grep -w Blender"
@@ -359,6 +354,11 @@ source ~/Documents/bash-tools/.bashrc
                     "name" : "XQuartz"
                     , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
                     , "cmd" : "brew cask install xquartz"
+                }
+                , "Inkscape" : {
+                    "name" : "Inkscape"
+                    , "verify" : "ls /Applications/ | grep -w Inkscape"
+                    , "cmd" : "brew cask install inkscape"
                 }
             }
 

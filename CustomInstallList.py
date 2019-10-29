@@ -7,7 +7,6 @@ def execute():
         , "iTerm"
         , "Dropbox"
         , "Slack"
-        , "Inkscape"
         , "ImageMagick"
         , "Chrome"
         , "Firefox"
@@ -16,5 +15,6 @@ def execute():
         , "ffmpeg"
         , "FileZilla"
         , "XQuartz"
+        , "Inkscape"
     ]
     return list
