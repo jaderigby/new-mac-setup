@@ -348,7 +348,7 @@ source ~/Documents/bash-tools/.bashrc
                 , "FileZilla" : {
                     "name" : "FileZilla"
                     , "verify" : "ls /Applications/ | grep -w FileZilla"
-                    , "cmd" : "brew cask install filezilla"
+                    , "cmd" : "cd ~/Downloads && curl -OL https://download.filezilla-project.org/client/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg && hdiutil attach FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg"
                 }
                 , "XQuartz" : {
                     "name" : "XQuartz"
