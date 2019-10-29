@@ -423,11 +423,6 @@ source ~/Documents/bash-tools/.bashrc
 
     def handle_atom_snippets():
         base = os.path.expanduser('~')
-        verify_file(base + '/.atom/snippets.cson', 'Snippets file created!', 'Snippets file verified!')
-        FILE = open(base + '/.atom/snippets.cson', 'r')
-        data = FILE.read()
-        FILE.close()
-        FILE = open(base + '/.atom/snippets.cson', 'w')
         snip = ''''.text.html.basic':
   'markdown-html blueprint':
     'prefix': 'html-mark'
@@ -1041,6 +1036,12 @@ source ~/Documents/bash-tools/.bashrc
   </body>
 </html>
 '''
+        verify_file(base + '/.atom/snippets.cson', snip, 'Snippets file created!', 'Snippets file verified!')
+        FILE = open(base + '/.atom/snippets.cson', 'r')
+        data = FILE.read()
+        FILE.close()
+        FILE = open(base + '/.atom/snippets.cson', 'w')
+
         snipCheck = "'prefix': 'html-mark'"
         pat = re.escape(snipCheck)
         match = re.search(pat, data)
