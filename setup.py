@@ -1204,7 +1204,7 @@ Press "Enter" to continue:''')
 
     def handle_videos_utility():
         base = os.path.expanduser('~')
-        install_from_gitlab('videos-utility', 'videos')
+        install_from_github('videos-utility', 'videos')
         snippet = 'alias vid="python ~/Documents/bash-tools/videos/actions.py"'
         verify_file(base + '/Documents/bash-tools/.bashrc', snippet, 'Videos alias is set', 'Videos alias already set')
 
