@@ -348,7 +348,7 @@ source ~/Documents/bash-tools/.bashrc
                 , "FileZilla" : {
                     "name" : "FileZilla"
                     , "verify" : "ls /Applications/ | grep -w FileZilla"
-                    , "cmd" : "cd ~/Downloads && curl -OL https://download.filezilla-project.org/client/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg && hdiutil attach FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg"
+                    , "cmd" : "cd ~/Downloads && curl -OL https://download.filezilla-project.org/client/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg && cd /Desktop && hdiutil attach ~/Downloads/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg"
                 }
                 , "XQuartz" : {
                     "name" : "XQuartz"
@@ -1039,7 +1039,7 @@ source ~/Documents/bash-tools/.bashrc
         $1
     </div>
   </body>
-</html>
+</html>"""
 '''
         verify_file(base + '/.atom/snippets.cson', snip, 'Snippets file created!', 'Snippets file verified!')
         FILE = open(base + '/.atom/snippets.cson', 'r')

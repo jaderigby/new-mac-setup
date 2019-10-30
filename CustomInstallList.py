@@ -13,7 +13,6 @@ def execute():
         , "ImageAlpha"
         , "MAMP"
         , "ffmpeg"
-        , "FileZilla"
         , "XQuartz"
         , "Inkscape"
         , "GasMask"
