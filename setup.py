@@ -343,7 +343,7 @@ source ~/Documents/bash-tools/.bashrc
                 , "ffmpeg" : {
                     "name" : "ffmpeg"
                     , "verify" : "ffmpeg -version"
-                    , "cmd" : "brew cask install ffmpeg"
+                    , "cmd" : "brew install ffmpeg"
                 }
                 , "FileZilla" : {
                     "name" : "FileZilla"
@@ -1197,7 +1197,7 @@ Press "Enter" to continue:''')
         subprocess_cmd('mkdir {}'.format('~/Documents/bash-tools'))
         handle_bash_tools_setup()
         install_from_github('bacon-util', 'bacon')
-        snippet = 'alias bacon="python ~/Documents/bash-tools/bacon/baconActions.py'
+        snippet = 'alias bacon="python ~/Documents/bash-tools/bacon/baconActions.py"'
         verify_file(base + '/.bash_profile', snippet, 'Alias is set', 'Alias already set')
 
         # alias bacon="python ~/Documents/bash-tools/bacon-util/baconActions.py"
