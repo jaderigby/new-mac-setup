@@ -16,5 +16,6 @@ def execute():
         , "FileZilla"
         , "XQuartz"
         , "Inkscape"
+        , "GasMask"
     ]
     return list

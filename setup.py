@@ -360,6 +360,11 @@ source ~/Documents/bash-tools/.bashrc
                     , "verify" : "ls /Applications/ | grep -w Inkscape"
                     , "cmd" : "brew cask install inkscape"
                 }
+                , "GasMask" : {
+                    "name" : "GasMask"
+                    , "verify" : "ls /Applications/ | grep -w 'Gas Mask'"
+                    , "cmd" : "brew cask install gas-mask"
+                }
             }
 
         installed = []
