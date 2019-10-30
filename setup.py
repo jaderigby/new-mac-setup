@@ -1198,16 +1198,19 @@ Press "Enter" to continue:''')
         handle_bash_tools_setup()
         install_from_github('bacon-util', 'bacon')
         snippet = 'alias bacon="python ~/Documents/bash-tools/bacon/baconActions.py"'
-        verify_file(base + '/.bash_profile', snippet, 'Alias is set', 'Alias already set')
+        verify_file(base + '/.bash_profile', snippet, 'Bacon alias is set', 'Bacon alias already set')
 
         # alias bacon="python ~/Documents/bash-tools/bacon-util/baconActions.py"
 
     def handle_videos_utility():
         install_from_gitlab('videos-utility', 'videos')
-        bash_tools_alias('')
+        snippet = 'alias vid="python ~/Documents/bash-tools/videos/actions.py"'
+        verify_file(base + '/Documents/bash-tools', snippet, 'Videos alias is set', 'Videos alias already set')
 
     def handle_image_optimization_utility():
         install_from_gitlab('image-optimization-utility', 'image-optimization')
+        snippet = 'alias opt="python ~/Documents/bash-tools/optimize-images/actions.py"'
+        verify_file(base + '/Documents/bash-tools', snippet, 'Image Opmtization alias is set', 'Image Opmtization alias already set')
 
     #=== Execute ===
     if action == None:
@@ -1225,6 +1228,7 @@ Press "Enter" to continue:''')
 [ --br-aliases ]        Add Basic Research Specific aliases
 [ --install-list ]      Install specific items as a list
 [ --bacon ]             Install bacon utilities including creating "bash-tools" folder within Documents directory
+[ --videos ]            Install the videos utility
 [ --image-opt ]         Install the image optimization utility
 ''')
     else:
@@ -1268,8 +1272,8 @@ Press "Enter" to continue:''')
                 handle_bacon_util()
             elif param == '--videos':
                 handle_videos_utility()
-            # elif param == '--image-opt':
-            #     handle_image_optimization_utility()
+            elif param == '--image-opt':
+                handle_image_optimization_utility()
             # elif param == '--deepignore':
             #     handle_deepignore_utility()
         print(divider)
