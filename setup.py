@@ -1181,7 +1181,9 @@ Press "Enter" to continue:''')
     def install_from_github(REPO_NAME, NEW_NAME):
         myFolder = 'bash-tools'
         subprocess_cmd('cd ~/Documents/{myFolder} && curl -OL https://github.com/jaderigby/{repoName}/archive/master.zip'.format(myFolder = myFolder, repoName = REPO_NAME))
+        print('cd ~/Documents/{myFolder} && curl -OL https://github.com/jaderigby/{repoName}/archive/master.zip')
         subprocess_cmd('cd ~/Documents/{myFolder} && unzip master.zip'.format(myFolder = myFolder))
+        print('cd ~/Documents/{myFolder} && unzip master.zip')
         subprocess_cmd('scp -r ~/Documents/{myFolder}/{repoName}-master/ ~/Documents/{myFolder}/{newName}/'.format(myFolder = myFolder, repoName = REPO_NAME, newName = NEW_NAME))
         subprocess_cmd('cd ~/Documents/{myFolder}/ && rm master.zip && rm -r {repoName}-master'.format(myFolder = myFolder, repoName = REPO_NAME))
 
@@ -1210,7 +1212,7 @@ Press "Enter" to continue:''')
 
     def handle_image_optimization_utility():
         base = os.path.expanduser('~')
-        install_from_gitlab('image-optimization-utility', 'image-optimization')
+        install_from_github('image-optimization-utility', 'image-optimization')
         snippet = 'alias opt="python ~/Documents/bash-tools/optimize-images/actions.py"'
         verify_file(base + '/Documents/bash-tools/.bashrc', snippet, 'Image Opmtization alias is set', 'Image Opmtization alias already set')
 
