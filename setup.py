@@ -1206,13 +1206,13 @@ Press "Enter" to continue:''')
         base = os.path.expanduser('~')
         install_from_gitlab('videos-utility', 'videos')
         snippet = 'alias vid="python ~/Documents/bash-tools/videos/actions.py"'
-        verify_file(base + '/Documents/bash-tools', snippet, 'Videos alias is set', 'Videos alias already set')
+        verify_file(base + '/Documents/bash-tools/.bashrc', snippet, 'Videos alias is set', 'Videos alias already set')
 
     def handle_image_optimization_utility():
         base = os.path.expanduser('~')
         install_from_gitlab('image-optimization-utility', 'image-optimization')
         snippet = 'alias opt="python ~/Documents/bash-tools/optimize-images/actions.py"'
-        verify_file(base + '/Documents/bash-tools', snippet, 'Image Opmtization alias is set', 'Image Opmtization alias already set')
+        verify_file(base + '/Documents/bash-tools/.bashrc', snippet, 'Image Opmtization alias is set', 'Image Opmtization alias already set')
 
     #=== Execute ===
     if action == None:
