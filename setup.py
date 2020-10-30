@@ -243,11 +243,6 @@ source ~/Documents/bash-tools/.bashrc
                 , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
                 , "cmd" : "brew cask install xquartz"
             }
-            # ,{
-            #       "name" : "Affinity Designer"
-            #     , "verify" : "ls /Applications/ | grep -w 'Affinity Designer'"
-            #     , "cmd" : "brew cask install affinity-designer"
-            # }
         ]
 
         installed = []
@@ -280,13 +275,13 @@ source ~/Documents/bash-tools/.bashrc
                     , "verify" : "node --version"
                     , "cmd" : "brew install node"
                 }
-                , "Atom" : {
-                    "name" : "Atom"
-                    , "verify" : "ls /Applications/ | grep -w Atom"
-                    , "cmd" : "brew cask install atom"
+                , "VSCode" : {
+                    "name" : "Visual Studio Code"
+                    , "verify" : "ls /Applications/ | grep -w 'Visual Studio Code'"
+                    , "cmd" : "brew cask install visual-studio-code"
                 }
-                , "iTerm" : {
-                    "name" : "iTerm"
+                , "iTerm2" : {
+                    "name" : "iTerm 2"
                     , "verify" : "ls /Applications/ | grep -w iTerm"
                     , "cmd" : "brew cask install iterm2"
                 }
@@ -335,11 +330,6 @@ source ~/Documents/bash-tools/.bashrc
                     , "verify" : "ls /Applications/ | grep -w Kaleidoscope"
                     , "cmd" : "brew cask install kaleidoscope"
                 }
-                , "MAMP" : {
-                    "name" : "MAMP"
-                    , "verify" : "ls /Applications/ | grep -w MAMP"
-                    , "cmd" : "brew cask install mamp"
-                }
                 , "ffmpeg" : {
                     "name" : "ffmpeg"
                     , "verify" : "ffmpeg -version"
@@ -368,9 +358,10 @@ source ~/Documents/bash-tools/.bashrc
             }
 
         installed = []
-        customList = CustomInstallList.execute()
+        customList = CustomInstallList.execute()['directory']
         for item in customList:
-            currObj = installDict[item]
+            installs = CustomInstallList.execute()['installs']
+            currObj = installs[item]
             if verify_installation(currObj['verify']) != True:
                 print("installing {}...".format(currObj['name']))
                 subprocess_cmd(currObj['cmd'])
@@ -1239,18 +1230,7 @@ Press "Enter" to continue:''')
                 handle_executable()
                 handle_aliases()
                 handle_homebrew()
-                handle_installs()
-                handle_atom_customization()
-                handle_atom_snippets()
-                handle_inkscape_customization()
-            elif param == '--dave':
-                handle_executable()
-                handle_aliases()
-                handle_br_aliases()
-                handle_homebrew()
                 handle_installs_as_list()
-                handle_atom_customization()
-                handle_atom_snippets()
                 handle_inkscape_customization()
             elif param == '--exec':
                 handle_executable()
@@ -1266,8 +1246,6 @@ Press "Enter" to continue:''')
                 handle_atom_snippets()
             elif param == '--inkscape-custom':
                 handle_inkscape_customization()
-            elif param == '--br-aliases':
-                handle_br_aliases()
             elif param == '--install-list':
                 handle_installs_as_list()
             elif param == '--bacon':
