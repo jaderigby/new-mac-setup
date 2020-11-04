@@ -120,21 +120,6 @@ alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE && kill
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"'''
         verify_file(base + '/.bash_profile', snippet, 'Aliases are set', 'Aliases already set')
 
-    def handle_br_aliases():
-        base = os.path.expanduser('~')
-        snippet = '''jira_branch_func() {
-  newBranch=$1
-  git fetch origin
-  git branch -v -a
-  git checkout --track origin/$newBranch
-}
-
-alias jira-branch="jira_branch_func"
-
-source ~/Documents/bash-tools/.bashrc
-'''
-        verify_file(base + '/.bash_profile', snippet, 'Aliases are set', 'Aliases already set')
-
     def handle_homebrew():
         print("Installing Homebrew ...")
         print('if you have problems, please install Homebrew manually by running the following command: \n/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
@@ -156,207 +141,22 @@ source ~/Documents/bash-tools/.bashrc
 
         return result
 
-    def handle_installs():
-        installDict = [
-            {
-                "name" : "Caskroom"
-              , "verify" : "brew info cask"
-              , "cmd" : "brew tap caskroom/cask"
-            }
-            ,{
-                  "name" : "Git"
-                , "verify" : "git --version"
-                , "cmd" : "brew install git"
-            }
-            ,{
-                  "name" : "Node"
-                , "verify" : "node --version"
-                , "cmd" : "brew install node"
-            }
-            ,{
-                  "name" : "Atom"
-                , "verify" : "ls /Applications/ | grep -w Atom"
-                , "cmd" : "brew cask install atom"
-            }
-            ,{
-                  "name" : "iTerm"
-                , "verify" : "ls /Applications/ | grep -w iTerm"
-                , "cmd" : "brew cask install iterm2"
-            }
-            ,{
-                  "name" : "Dropbox"
-                , "verify" : "ls /Applications/ | grep -w Dropbox"
-                , "cmd" : "brew cask install dropbox"
-            }
-            ,{
-                  "name" : "Slack"
-                , "verify" : "ls /Applications/ | grep -w Slack"
-                , "cmd" : "brew cask install slack"
-            }
-            ,{
-                  "name" : "Inkscape"
-                , "verify" : "ls /Applications/ | grep -w Inkscape"
-                , "cmd" : "brew cask install inkscape"
-            }
-            ,{
-                  "name" : "Blender"
-                , "verify" : "ls /Applications/ | grep -w Blender"
-                , "cmd" : "brew cask install blender"
-            }
-            ,{
-                  "name" : "ImageMagick"
-                , "verify" : "convert -version"
-                , "cmd" : "brew install imagemagick"
-            }
-            ,{
-                  "name" : "Spotify"
-                , "verify" : "ls /Applications/ | grep -w Spotify"
-                , "cmd" : "brew cask install spotify"
-            }
-            ,{
-                  "name" : "Chrome"
-                , "verify" : "ls /Applications/ | grep -w Chrome"
-                , "cmd" : "brew cask install google-chrome"
-            }
-            ,{
-                  "name" : "Firefox"
-                , "verify" : "ls /Applications/ | grep -w Firefox"
-                , "cmd" : "brew cask install firefox"
-            }
-            ,{
-                  "name" : "ImageAlpha"
-                , "verify" : "ls /Applications/ | grep -w ImageAlpha"
-                , "cmd" : "brew cask install imagealpha"
-            }
-            ,{
-                  "name" : "Astropad Studio"
-                , "verify" : "ls /Applications/ | grep -w Astropad Studio"
-                , "cmd" : "brew cask install astropad-studio"
-            }
-            ,{
-                  "name" : "Kaleidoscope"
-                , "verify" : "ls /Applications/ | grep -w Kaleidoscope"
-                , "cmd" : "brew cask install kaleidoscope"
-            }
-            ,{
-                  "name" : "XQuartz"
-                , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
-                , "cmd" : "brew cask install xquartz"
-            }
-        ]
+    def handle_xcode():
+        raw_input("Go to the app store, and install Xcode. Then, open Xcode and install the Command Line Tools.")
+    
+    def handle_jenv():
+        subprocess_cmd("""echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.bash_profile""")
+        subprocess_cmd("""echo 'eval "$(jenv init -)"' >> ~/.bash_profile""")
+        subprocess_cmd("""jenv enable-plugin export""")
+        print("To check if jenv installation was successful, restart terminal session and type 'jenv versions'. You should see a list of installed version, including the default.")
+    
+    def handle_prep_yarn():
+        raw_input("If you use nvm or similar, you should ensure that your PATH lists nvm's shims before the version of Node.js installed by Homebrew.")
 
-        installed = []
-        for item in installDict:
-            if verify_installation(item['verify']) != True:
-                print("installing {}...".format(item['name']))
-                subprocess_cmd(item['cmd'])
-                installed.append(item['name'])
-        if len(installed) > 0:
-            print("")
-            print("The following items were installed: ")
-            print("")
-            for item in installed:
-                print "- {}".format(item)
+    def handle_xcode_command_line_tools():
+        print("If you run into issues installing NVM, refer to https://github.com/nvm-sh/nvm#troubleshooting-on-macos")
 
-    def handle_installs_as_list():
-        installDict = {
-                "Caskroom" : {
-                    "name" : "Caskroom"
-                    , "verify" : "brew info cask"
-                    , "cmd" : "brew tap caskroom/cask"
-                }
-                , "Git" : {
-                    "name" : "Git"
-                    , "verify" : "git --version"
-                    , "cmd" : "brew install git"
-                }
-                , "Node" : {
-                    "name" : "Node"
-                    , "verify" : "node --version"
-                    , "cmd" : "brew install node"
-                }
-                , "VSCode" : {
-                    "name" : "Visual Studio Code"
-                    , "verify" : "ls /Applications/ | grep -w 'Visual Studio Code'"
-                    , "cmd" : "brew cask install visual-studio-code"
-                }
-                , "iTerm2" : {
-                    "name" : "iTerm 2"
-                    , "verify" : "ls /Applications/ | grep -w iTerm"
-                    , "cmd" : "brew cask install iterm2"
-                }
-                , "Dropbox" : {
-                    "name" : "Dropbox"
-                    , "verify" : "ls /Applications/ | grep -w Dropbox"
-                    , "cmd" : "brew cask install dropbox"
-                }
-                , "Slack" : {
-                    "name" : "Slack"
-                    , "verify" : "ls /Applications/ | grep -w Slack"
-                    , "cmd" : "brew cask install slack"
-                }
-                , "Blender" : {
-                    "name" : "Blender"
-                    , "verify" : "ls /Applications/ | grep -w Blender"
-                    , "cmd" : "brew cask install blender"
-                }
-                , "ImageMagick" : {
-                    "name" : "ImageMagick"
-                    , "verify" : "convert -version"
-                    , "cmd" : "brew install imagemagick"
-                }
-                , "Spotify" : {
-                    "name" : "Spotify"
-                    , "verify" : "ls /Applications/ | grep -w Spotify"
-                    , "cmd" : "brew cask install spotify"
-                }
-                , "Chrome" : {
-                    "name" : "Chrome"
-                    , "verify" : "ls /Applications/ | grep -w Chrome"
-                    , "cmd" : "brew cask install google-chrome"
-                }
-                , "Firefox" : {
-                    "name" : "Firefox"
-                    , "verify" : "ls /Applications/ | grep -w Firefox"
-                    , "cmd" : "brew cask install firefox"
-                }
-                , "ImageAlpha" : {
-                    "name" : "ImageAlpha"
-                    , "verify" : "ls /Applications/ | grep -w ImageAlpha"
-                    , "cmd" : "brew cask install imagealpha"
-                }
-                , "Kaleidoscope" : {
-                    "name" : "Kaleidoscope"
-                    , "verify" : "ls /Applications/ | grep -w Kaleidoscope"
-                    , "cmd" : "brew cask install kaleidoscope"
-                }
-                , "ffmpeg" : {
-                    "name" : "ffmpeg"
-                    , "verify" : "ffmpeg -version"
-                    , "cmd" : "brew install ffmpeg"
-                }
-                , "FileZilla" : {
-                    "name" : "FileZilla"
-                    , "verify" : "ls /Applications/ | grep -w FileZilla"
-                    , "cmd" : "cd ~/Downloads && curl -OL https://download.filezilla-project.org/client/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg && cd /Desktop && hdiutil attach ~/Downloads/FileZilla_3.45.1_macosx-x86_sponsored-setup.dmg"
-                }
-                , "XQuartz" : {
-                    "name" : "XQuartz"
-                    , "verify" : "ls /Applications/Utilities/ | grep -w XQuartz"
-                    , "cmd" : "brew cask install xquartz"
-                }
-                , "Inkscape" : {
-                    "name" : "Inkscape"
-                    , "verify" : "ls /Applications/ | grep -w Inkscape"
-                    , "cmd" : "brew cask install inkscape"
-                }
-                , "GasMask" : {
-                    "name" : "GasMask"
-                    , "verify" : "ls /Applications/ | grep -w 'Gas Mask'"
-                    , "cmd" : "brew cask install gas-mask"
-                }
-            }
-
+    def handle_install_list():
         installed = []
         customList = CustomInstallList.execute()['directory']
         for item in customList:
@@ -1210,19 +1010,21 @@ Press "Enter" to continue:''')
         print("Acceptable Actions:")
         print('''
 [ -a ]                  Run all processes
-[ --dave ]              Install components for Dave's computer
 [ --exec ]              make script executable from command line by simply typing file name
 [ --aliases ]           Add standard aliases to bash_profile, including show/hide hidden files
 [ --homebrew ]          install Homebrew
-[ --install ]           install all software (node, chrome, etc)
 [ --atom-custom ]       customize atom (includes packages)
 [ --atom-snippets ]     markdown template snippet
 [ --inkscape-custom ]   customize Inkscape.  Includes: icons, colors, keybindings
-[ --br-aliases ]        Add Basic Research Specific aliases
-[ --install-list ]      Install specific items as a list
+[ --install ]      Install specific items as a list
 [ --bacon ]             Install bacon utilities including creating "bash-tools" folder within Documents directory
 [ --videos ]            Install the videos utility
 [ --image-opt ]         Install the image optimization utility
+[ --xcode ]             Instructions for installing Xcode
+[ --cl-tools ]          Install Command Line Tools
+[ --yarn ]              Prep info for installing yarn
+[ --jenv ]              Install Java version handler
+
 ''')
     else:
         for param in sys.argv:
@@ -1230,16 +1032,17 @@ Press "Enter" to continue:''')
                 handle_executable()
                 handle_aliases()
                 handle_homebrew()
-                handle_installs_as_list()
-                handle_inkscape_customization()
+                handle_xcode()
+                handle_xcode_command_line_tools()
+                handle_prep_yarn()
+                handle_jenv()
+                handle_install_list()
             elif param == '--exec':
                 handle_executable()
             elif param == '--homebrew':
                 handle_homebrew()
             elif param == '--aliases':
                 handle_aliases()
-            elif param == '--install':
-                handle_installs()
             elif param == '--atom-custom':
                 handle_atom_customization()
             elif param == '--atom-snippets':
@@ -1247,13 +1050,21 @@ Press "Enter" to continue:''')
             elif param == '--inkscape-custom':
                 handle_inkscape_customization()
             elif param == '--install-list':
-                handle_installs_as_list()
+                handle_install_list()
             elif param == '--bacon':
                 handle_bacon_util()
             elif param == '--videos':
                 handle_videos_utility()
             elif param == '--image-opt':
                 handle_image_optimization_utility()
+            elif param == '--xcode':
+                handle_xcode()
+            elif param == '--cl-tools':
+                handle_xcode_command_line_tools()
+            elif param == '--yarn':
+                handle_prep_yarn()
+            elif param == '--jenv':
+                handle_jenv()
             # elif param == '--deepignore':
             #     handle_deepignore_utility()
         print(divider)

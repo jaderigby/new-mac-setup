@@ -1,8 +1,10 @@
 def execute():
+    # Directory is items cherry picked to be installed
     directory = [
           "Caskroom"
         , "Git"
-        , "Node"
+        , "NVM"
+        , "Yarn"
         , "VSCode"
         , "iTerm2"
         , "Dropbox"
@@ -16,6 +18,7 @@ def execute():
         , "Inkscape"
         , "GasMask"
     ]
+    # Installs is the configuration for ALL possible software
     installs = {
         "Caskroom" : {
             "name" : "Caskroom"
@@ -26,6 +29,16 @@ def execute():
             "name" : "Git"
             , "verify" : "git --version"
             , "cmd" : "brew install git"
+        }
+        , "NVM" : {
+            "name" : "NVM"
+            , "verify" : "node --version"
+            , "cmd" : "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash"
+        }
+        , "Yarn" : {
+            "name" : "Yarn"
+            , "verify" : "yarn --version"
+            , "cmd" : "brew install yarn"
         }
         , "Node" : {
             "name" : "Node"
